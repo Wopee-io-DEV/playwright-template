@@ -26,7 +26,7 @@ jobs:
             env:
                 GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                 WOPEE_API_KEY: ${{ secrets.WOPEE_API_KEY }}
-                WOPEE_API_URL: ${{ vars.WOPEE_API_URL }}
+                WOPEE_API_URL: ${{ vars.WOPEE_API_URL || 'https://api.wopee.io' }}
                 WOPEE_PROJECT_UUID: ${{ vars.WOPEE_PROJECT_UUID }}
                 WOPEE_SCREENSHOT_VALIDATION_ENABLED: "true"
                 WOPEE_BRANCH_NAME: master
