@@ -4,25 +4,33 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    container: 
-        image: ghcr.io/wopee-io/runtime
-        options: --workdir /home/pwuser/pw
+    configure:
+        runs-on: ubuntu-latest
+        outputs:
+            uid_gid: ${{ steps.get-user.outputs.uid_gid }}
+        steps:
+          - id: get-user
+            run: echo "::set-output name=uid_gid::$(id -u):$(id -g)"
 
-    steps:
-      - uses: actions/checkout@v4
+    test:
+        runs-on: ubuntu-latest
+        container: 
+            image: ghcr.io/wopee-io/runtime
+            options: --user ${{ needs.configure.outputs.uid_gid }}
 
-      - name: Run tests
-        env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            WOPEE_API_KEY: f3e7207ebdea58ffdcc215c123a0220e
-            WOPEE_API_URL: https://api.dev.wopee.io/
-            WOPEE_PROJECT_UUID: 7ec6d0c3-b006-4363-a7b6-38b8edddd177
-            WOPEE_SCREENSHOT_VALIDATION_ENABLED: "true"
-            WOPEE_BRANCH_NAME: master
-            WOPEE_CI_BUILD_ID: build-123
-            WOPEE_CUSTOM_TAGS: custom-tag
-            WOPEE_ENABLE_SOFT_ASSERT: "true"
-            WOPEE_PIXEL_TO_PIXEL_DIFF_TOLERANCE: "0.1"
-        run: npm run tests
+        steps:
+          - uses: actions/checkout@v4
+
+          - name: Run tests
+            env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                WOPEE_API_KEY: f3e7207ebdea58ffdcc215c123a0220e
+                WOPEE_API_URL: https://api.dev.wopee.io/
+                WOPEE_PROJECT_UUID: 7ec6d0c3-b006-4363-a7b6-38b8edddd177
+                WOPEE_SCREENSHOT_VALIDATION_ENABLED: "true"
+                WOPEE_BRANCH_NAME: master
+                WOPEE_CI_BUILD_ID: build-123
+                WOPEE_CUSTOM_TAGS: custom-tag
+                WOPEE_ENABLE_SOFT_ASSERT: "true"
+                WOPEE_PIXEL_TO_PIXEL_DIFF_TOLERANCE: "0.1"
+            run: npm run tests
