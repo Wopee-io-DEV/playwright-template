@@ -1,0 +1,12 @@
+{
+  "type": "commonjs",
+  "dependencies": {
+    "@wopee-io/wopee.pw": "3.0.0",
+    "@playwright/test": "^1.43.1"
+  },
+  "scripts": {
+    "pw:browser": "npx playwright test --config playwright.config.ts",
+    "tests": "npm install && npm run pw:browser",
+    "tests-in-docker": "docker run --rm --name tests-pw --env-file .env --volume ./:/home/pwuser/pw autonomous-testing/runtime:latest bash -c 'cd pw && npm run tests'"
+  }
+}
