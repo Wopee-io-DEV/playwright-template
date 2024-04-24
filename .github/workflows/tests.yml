@@ -25,9 +25,9 @@ jobs:
           - name: Run tests
             env:
                 GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                WOPEE_API_KEY: f3e7207ebdea58ffdcc215c123a0220e
-                WOPEE_API_URL: https://api.dev.wopee.io/
-                WOPEE_PROJECT_UUID: 7ec6d0c3-b006-4363-a7b6-38b8edddd177
+                WOPEE_API_KEY: ${{ secrets.WOPEE_API_KEY }}
+                WOPEE_API_URL: ${{ vars.WOPEE_API_URL }}
+                WOPEE_PROJECT_UUID: ${{ vars.WOPEE_PROJECT_UUID }}
                 WOPEE_SCREENSHOT_VALIDATION_ENABLED: "true"
                 WOPEE_BRANCH_NAME: master
                 WOPEE_CI_BUILD_ID: build-123
