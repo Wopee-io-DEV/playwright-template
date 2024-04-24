@@ -1,4 +1,4 @@
-# Playwright test template repo
+# Playwright tests template repo
 
 ## A) Run in the cloud using GitHub Actions
 
