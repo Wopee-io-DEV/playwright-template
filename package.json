@@ -7,8 +7,7 @@
     "typescript": "^5.4.5"
   },
   "scripts": {
-    "pw:browser": "npx playwright test --config playwright.config.ts",
-    "tests": "npm install && npm run pw:browser",
-    "tests-in-docker": "docker run --rm --name tests-pw --env-file .env --volume ./:/home/pwuser/pw --env GITHUB_TOKEN=$GITHUB_TOKEN ghcr.io/wopee-io/runtime:latest bash -c 'cd pw && npm run tests'"
+    "test": "npm run pw",
+    "pw": "npx playwright test --config playwright.config.ts"
   }
 }
