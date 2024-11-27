@@ -1,20 +1,21 @@
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig, devices } from "@playwright/test";
 
 export default defineConfig({
-  testDir: './tests/',
+  testDir: "./tests/",
+  snapshotPathTemplate: "baselines{/projectName}/{testFilePath}/{arg}{ext}",
   fullyParallel: true,
   timeout: 100000,
-  reporter: 'html',
+  reporter: "html",
   use: {
-    trace: 'on-first-retry',
+    trace: "on-first-retry",
   },
 
   projects: [
     {
-      name: 'chrome',
+      name: "chrome",
       use: {
         headless: true,
-        viewport: { width: 1600, height: 1000},
+        viewport: { width: 1600, height: 1000 },
         channel: "chrome",
       },
     },
