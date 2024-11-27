@@ -10,7 +10,7 @@
 
 ### Run
 
-- **Run Playwright tests** workflow from [_Actions_](/../../actions) tab
+- **Run Playwright tests** workflow from [_Actions_](/../../../actions) tab
 
 ## B) Run locally on your machine
 
