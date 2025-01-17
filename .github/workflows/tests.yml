@@ -14,7 +14,7 @@ jobs:
           - name: Receive code
             if: github.event_name == 'repository_dispatch' && github.event.client_payload.code != null
             run: |
-              rm -rf tests/*.spec.ts
+              rm -rf tests/*
               echo "${{ github.event.client_payload.code }}" | base64 --decode > tests/code.spec.ts
 
           - name: Run tests
