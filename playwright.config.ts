@@ -5,7 +5,7 @@ export default defineConfig({
   snapshotPathTemplate: "baselines{/projectName}/{testFilePath}/{arg}{ext}",
   fullyParallel: true,
   timeout: 100000,
-  reporter: "html",
+  reporter: [["@wopee-io/wopee.pw/wopee-reporter"], ["list"]],
   use: {
     trace: "on-first-retry",
   },
