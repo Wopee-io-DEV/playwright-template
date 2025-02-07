@@ -9,8 +9,8 @@ test.describe("Complex Example", () => {
     await wopee.startSuite(`Complex Example ${new Date().toISOString().substring(0, 16)}`);
   });
 
-  test.beforeEach(async () => {
-    await wopee.startScenario(test.info().title);
+  test.beforeEach(async ({}, testInfo) => {
+    await wopee.startScenario(test.info().title, testInfo);
   });
 
   test.afterEach(async () => {
