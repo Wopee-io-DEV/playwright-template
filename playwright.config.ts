@@ -8,6 +8,7 @@ export default defineConfig({
   reporter: [["@wopee-io/wopee.pw/wopee-reporter"], ["list"]],
   use: {
     trace: "on-first-retry",
+    screenshot: "only-on-failure",
   },
 
   projects: [
