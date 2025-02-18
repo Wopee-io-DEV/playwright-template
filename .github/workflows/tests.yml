@@ -32,3 +32,13 @@ jobs:
             run: |
                 npm install --prefer-offline --no-audit
                 npm run test
+                
+          - name: Upload test results
+            if: always()
+            uses: actions/upload-artifact@v4
+            with:
+              name: playwright-results
+              path: |
+                test-results
+                playwright-report
+              retention-days: 3

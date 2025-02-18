@@ -7,7 +7,8 @@ export default defineConfig({
   timeout: 100000,
   reporter: [["@wopee-io/wopee.pw/wopee-reporter"], ["list"]],
   use: {
-    trace: "on-first-retry",
+    trace: "on",
+    video: "on",
     screenshot: "only-on-failure",
   },
 
