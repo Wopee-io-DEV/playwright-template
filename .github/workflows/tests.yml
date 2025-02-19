@@ -31,7 +31,7 @@ jobs:
                 WOPEE_PIXEL_TO_PIXEL_DIFF_TOLERANCE: "0.1"
             run: |
                 npm install --prefer-offline --no-audit
-                npx playwright install 
+                npx playwright install ffmpeg
                 npm run test
                 
           - name: Upload test results
