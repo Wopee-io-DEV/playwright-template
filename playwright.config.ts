@@ -5,7 +5,7 @@ export default defineConfig({
   snapshotPathTemplate: "baselines{/projectName}/{testFilePath}/{arg}{ext}",
   fullyParallel: true,
   timeout: 100000,
-  reporter: [["@wopee-io/wopee.pw/wopee-reporter"], ["list"]],
+  reporter: "@wopee-io/wopee.pw/wopee-reporter",
   use: {
     trace: "on",
     video: "on",
