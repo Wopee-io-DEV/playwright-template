@@ -1,13 +1,17 @@
 {
   "type": "commonjs",
   "dependencies": {
-    "@wopee-io/wopee.pw": "^4.16.0",
+    "@ai-sdk/azure": "^1.1.13",
     "@playwright/test": "^1.43.1",
-    "ts-node": "^10.9.2",
+    "@wopee-io/wopee.pw": "^4.17.1",
+    "ai": "^4.1.45",
+    "cli-table3": "^0.6.5",
+    "parse5": "^7.2.1",
     "typescript": "^5.4.5"
   },
   "scripts": {
     "test": "npm run pw",
+    "agent": "playwright test ./agents/run-agent.spec.ts --config playwright.config.ts",
     "pw": "npx playwright test --config playwright.config.ts"
   }
 }
