@@ -12,6 +12,6 @@
   "scripts": {
     "test": "npm run pw",
     "agent": "playwright test ./agents/run-agent.spec.ts --config playwright.config.ts",
-    "pw": "npx playwright test --config playwright.config.ts"
+    "pw": "playwright test ./tests/ --config playwright.config.ts"
   }
 }
