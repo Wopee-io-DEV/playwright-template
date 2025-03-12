@@ -9,10 +9,10 @@ on:
       WOPEE_PROJECT_URL:
         description: 'WOPEE_PROJECT_URL'
         required: true
-        default: 'https://csob.cz'
+        default: 'https://dronjo.wopee.io'
       WOPEE_USER_PROMPT:
         description: 'WOPEE_USER_PROMPT'
-        default: 'Projdi úroveň Lidé a pak všechny nebo alespoň vybrané produkty (horizontální menu druhé úrovně) a zkus najít produkty, který mají volbu sjednat (online).'
+        default: 'Proceed with E2E purchase flow.'
         required: true
       AGENT_AZURE_MODEL_NAME:
         description: 'AGENT_AZURE_MODEL_NAME'
@@ -20,6 +20,7 @@ on:
         type: choice
         default: 'gpt-4o-mini'
         options:
+          - 'gpt-4o'
           - 'gpt-4o-mini'
           - 'o3-mini'
           - 'Cohere-command-r-08-2024'
@@ -38,6 +39,7 @@ on:
         type: choice
         default: 'gpt-4o-mini'
         options:
+          - 'gpt-4o'
           - 'gpt-4o-mini'
           - 'o3-mini'
           - 'Cohere-command-r-08-2024'
