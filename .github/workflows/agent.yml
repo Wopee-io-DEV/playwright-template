@@ -91,6 +91,23 @@ jobs:
               npm install --prefer-offline --no-audit
               npx playwright install ffmpeg
 
+          - name: Create data folder
+            run: mkdir -p data
+          - if: github.event.client_payload.app_context
+            run: echo "${{ github.event.client_payload.app_context }}" | base64 --decode > data/app_context.md
+          - if: github.event.client_payload.general_user_stories
+            run: echo "${{ github.event.client_payload.general_user_stories }}" | base64 --decode > data/general_user_stories.md
+          - if: github.event.client_payload.general_user_stories_additional_prompt
+            run: echo "${{ github.event.client_payload.general_user_stories_additional_prompt }}" | base64 --decode > data/general_user_stories_additional_prompt.md
+          - if: github.event.client_payload.test_cases
+            run: echo "${{ github.event.client_payload.test_cases }}" | base64 --decode > data/test_cases.json
+          - if: github.event.client_payload.test_cases_additional_prompt
+            run: echo "${{ github.event.client_payload.test_cases_additional_prompt }}" | base64 --decode > data/test_cases_additional_prompt.md
+          - if: github.event.client_payload.user_stories
+            run: echo "${{ github.event.client_payload.user_stories }}" | base64 --decode > data/user_stories.json
+          - if: github.event.client_payload.test_case
+            run: echo "${{ github.event.client_payload.test_case }}" | base64 --decode > data/test_case.json
+            
           - name: Run code
             if: github.event.client_payload.code != null
             run: |
