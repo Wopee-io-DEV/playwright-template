@@ -7,125 +7,125 @@ on:
   workflow_dispatch:
     inputs:
       WOPEE_PROJECT_URL:
-        description: 'WOPEE_PROJECT_URL'
+        description: "WOPEE_PROJECT_URL"
         required: true
-        default: 'https://dronjo.wopee.io'
+        default: "https://dronjo.wopee.io"
       WOPEE_USER_PROMPT:
-        description: 'WOPEE_USER_PROMPT'
-        default: 'Proceed with E2E purchase flow.'
+        description: "WOPEE_USER_PROMPT"
+        default: "Proceed with E2E purchase flow."
         required: true
       AGENT_AZURE_MODEL_NAME:
-        description: 'AGENT_AZURE_MODEL_NAME'
+        description: "AGENT_AZURE_MODEL_NAME"
         required: true
         type: choice
-        default: 'gpt-4o-mini'
+        default: "gpt-4o-mini"
         options:
-          - 'gpt-4o'
-          - 'gpt-4o-mini'
-          - 'o3-mini'
-          - 'Cohere-command-r-08-2024'
+          - "gpt-4o"
+          - "gpt-4o-mini"
+          - "o3-mini"
+          - "Cohere-command-r-08-2024"
       AGENT_AZURE_API_VERSION:
-        description: 'AGENT_AZURE_API_VERSION'
+        description: "AGENT_AZURE_API_VERSION"
         required: true
         type: choice
-        default: '2024-10-21'
+        default: "2024-10-21"
         options:
-          - '2024-10-21'
-          - '2024-12-01-preview'
-          - '2024-05-01-preview'
+          - "2024-10-21"
+          - "2024-12-01-preview"
+          - "2024-05-01-preview"
       TOOLS_AZURE_MODEL_NAME:
-        description: 'TOOLS_AZURE_MODEL_NAME'
+        description: "TOOLS_AZURE_MODEL_NAME"
         required: true
         type: choice
-        default: 'gpt-4o-mini'
+        default: "gpt-4o-mini"
         options:
-          - 'gpt-4o'
-          - 'gpt-4o-mini'
-          - 'o3-mini'
-          - 'Cohere-command-r-08-2024'
+          - "gpt-4o"
+          - "gpt-4o-mini"
+          - "o3-mini"
+          - "Cohere-command-r-08-2024"
       TOOLS_AZURE_API_VERSION:
-        description: 'TOOLS_AZURE_API_VERSION'
+        description: "TOOLS_AZURE_API_VERSION"
         required: true
         type: choice
-        default: '2024-10-21'
+        default: "2024-10-21"
         options:
-          - '2024-10-21'
-          - '2024-12-01-preview'
-          - '2024-05-01-preview'
- 
+          - "2024-10-21"
+          - "2024-12-01-preview"
+          - "2024-05-01-preview"
+
 jobs:
-    test:
-        runs-on: self-hosted
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          WOPEE_API_KEY: ${{ secrets.WOPEE_API_KEY }}
-          WOPEE_API_URL: ${{ vars.WOPEE_API_URL || 'https://api.wopee.io' }}
-          WOPEE_PROJECT_UUID: ${{ vars.WOPEE_PROJECT_UUID }}
-          WOPEE_PROJECT_URL: ${{ inputs.WOPEE_PROJECT_URL || vars.WOPEE_PROJECT_URL || 'https://dronjo.wopee.io' }}
-          WOPEE_SCREENSHOT_VALIDATION_ENABLED: "true"
-          WOPEE_BRANCH_NAME: master
-          WOPEE_CI_BUILD_ID: build-123
-          WOPEE_CUSTOM_TAGS: custom-tag
-          WOPEE_ENABLE_SOFT_ASSERT: "true"
-          WOPEE_PIXEL_TO_PIXEL_DIFF_TOLERANCE: "0.1"
-          WOPEE_COLLECT_PAGE_CONTENT: "true"
-          WOPEE_USER_PROMPT: ${{ inputs.WOPEE_USER_PROMPT || 'Discover and proceed with all possible user stories in the application.' }}
-          AGENT_AZURE_API_KEY: ${{ secrets.AGENT_AZURE_API_KEY || secrets.AZURE_API_KEY }}
-          AGENT_AZURE_RESOURCE_NAME: ${{ vars.AGENT_AZURE_RESOURCE_NAME || 'wopee-ox' }}
-          AGENT_AZURE_MODEL_NAME: ${{ inputs.AGENT_AZURE_MODEL_NAME || 'gpt-4o-mini' }}
-          AGENT_AZURE_API_VERSION: ${{ inputs.AGENT_AZURE_API_VERSION || '2024-10-21' }}
-          TOOLS_AZURE_API_KEY: ${{ secrets.TOOLS_AZURE_API_KEY || secrets.AZURE_API_KEY }}
-          TOOLS_AZURE_RESOURCE_NAME: ${{ vars.TOOLS_AZURE_RESOURCE_NAME || 'wopee-ox' }}
-          TOOLS_AZURE_MODEL_NAME: ${{ inputs.TOOLS_AZURE_MODEL_NAME || 'gpt-4o-mini' }}
-          TOOLS_AZURE_API_VERSION: ${{ inputs.TOOLS_AZURE_API_VERSION || '2024-10-21' }}
-          AZURE_API_KEY: ${{ secrets.AGENT_AZURE_API_KEY || secrets.AZURE_API_KEY }}
-          AZURE_RESOURCE_NAME: ${{ vars.AGENT_AZURE_RESOURCE_NAME || 'wopee-ox' }}
-          AZURE_MODEL_NAME: ${{ inputs.AGENT_AZURE_MODEL_NAME || 'gpt-4o-mini' }}
-          AZURE_API_VERSION: ${{ inputs.AGENT_AZURE_API_VERSION || '2024-10-21' }}
+  test:
+    runs-on: self-hosted
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      WOPEE_API_KEY: ${{ secrets.WOPEE_API_KEY }}
+      WOPEE_API_URL: ${{ vars.WOPEE_API_URL || 'https://api.wopee.io' }}
+      WOPEE_PROJECT_UUID: ${{ vars.WOPEE_PROJECT_UUID }}
+      WOPEE_PROJECT_URL: ${{ inputs.WOPEE_PROJECT_URL || vars.WOPEE_PROJECT_URL || 'https://dronjo.wopee.io' }}
+      WOPEE_SCREENSHOT_VALIDATION_ENABLED: "true"
+      WOPEE_BRANCH_NAME: master
+      WOPEE_CI_BUILD_ID: build-123
+      WOPEE_CUSTOM_TAGS: custom-tag
+      WOPEE_ENABLE_SOFT_ASSERT: "true"
+      WOPEE_PIXEL_TO_PIXEL_DIFF_TOLERANCE: "0.1"
+      WOPEE_COLLECT_PAGE_CONTENT: "true"
+      WOPEE_USER_PROMPT: ${{ inputs.WOPEE_USER_PROMPT || 'Discover and proceed with all possible user stories in the application.' }}
+      AGENT_AZURE_API_KEY: ${{ secrets.AGENT_AZURE_API_KEY || secrets.AZURE_API_KEY }}
+      AGENT_AZURE_RESOURCE_NAME: ${{ vars.AGENT_AZURE_RESOURCE_NAME || 'wopee-ox' }}
+      AGENT_AZURE_MODEL_NAME: ${{ inputs.AGENT_AZURE_MODEL_NAME || 'gpt-4o-mini' }}
+      AGENT_AZURE_API_VERSION: ${{ inputs.AGENT_AZURE_API_VERSION || '2024-10-21' }}
+      TOOLS_AZURE_API_KEY: ${{ secrets.TOOLS_AZURE_API_KEY || secrets.AZURE_API_KEY }}
+      TOOLS_AZURE_RESOURCE_NAME: ${{ vars.TOOLS_AZURE_RESOURCE_NAME || 'wopee-ox' }}
+      TOOLS_AZURE_MODEL_NAME: ${{ inputs.TOOLS_AZURE_MODEL_NAME || 'gpt-4o-mini' }}
+      TOOLS_AZURE_API_VERSION: ${{ inputs.TOOLS_AZURE_API_VERSION || '2024-10-21' }}
+      AZURE_API_KEY: ${{ secrets.AGENT_AZURE_API_KEY || secrets.AZURE_API_KEY }}
+      AZURE_RESOURCE_NAME: ${{ vars.AGENT_AZURE_RESOURCE_NAME || 'wopee-ox' }}
+      AZURE_MODEL_NAME: ${{ inputs.AGENT_AZURE_MODEL_NAME || 'gpt-4o-mini' }}
+      AZURE_API_VERSION: ${{ inputs.AGENT_AZURE_API_VERSION || '2024-10-21' }}
 
-        steps:
-          - uses: actions/checkout@v4
+    steps:
+      - uses: actions/checkout@v4
 
-          - name: Install dependencies
-            run: |
-              npm install --prefer-offline --no-audit
-              npx playwright install ffmpeg
+      - name: Install dependencies
+        run: |
+          npm install --prefer-offline --no-audit
+          npx playwright install ffmpeg
 
-          - name: Create data folder
-            run: mkdir -p data
-          - if: github.event.client_payload.app_context
-            run: echo "${{ github.event.client_payload.app_context }}" | base64 --decode > data/app_context.md
-          - if: github.event.client_payload.general_user_stories
-            run: echo "${{ github.event.client_payload.general_user_stories }}" | base64 --decode > data/general_user_stories.md
-          - if: github.event.client_payload.general_user_stories_additional_prompt
-            run: echo "${{ github.event.client_payload.general_user_stories_additional_prompt }}" | base64 --decode > data/general_user_stories_additional_prompt.md
-          - if: github.event.client_payload.test_cases
-            run: echo "${{ github.event.client_payload.test_cases }}" | base64 --decode > data/test_cases.json
-          - if: github.event.client_payload.test_cases_additional_prompt
-            run: echo "${{ github.event.client_payload.test_cases_additional_prompt }}" | base64 --decode > data/test_cases_additional_prompt.md
-          - if: github.event.client_payload.user_stories
-            run: echo "${{ github.event.client_payload.user_stories }}" | base64 --decode > data/user_stories.json
-          - if: github.event.client_payload.test_case
-            run: echo "${{ github.event.client_payload.test_case }}" | base64 --decode > data/test_case.json
-            
-          - name: Run code
-            if: github.event.client_payload.code != null
-            run: |
-              rm -rf tests/*
-              echo "${{ github.event.client_payload.code }}" | base64 --decode > tests/code.spec.ts
-              npm run test
+      - name: Create data folder
+        run: mkdir -p data
+      - if: github.event.client_payload.app_context
+        run: echo "${{ github.event.client_payload.app_context }}" | base64 --decode > data/app_context.md
+      - if: github.event.client_payload.general_user_stories
+        run: echo "${{ github.event.client_payload.general_user_stories }}" | base64 --decode > data/general_user_stories.md
+      - if: github.event.client_payload.general_user_stories_additional_prompt
+        run: echo "${{ github.event.client_payload.general_user_stories_additional_prompt }}" | base64 --decode > data/general_user_stories_additional_prompt.md
+      - if: github.event.client_payload.test_cases
+        run: echo "${{ github.event.client_payload.test_cases }}" | base64 --decode > data/test_cases.json
+      - if: github.event.client_payload.test_cases_additional_prompt
+        run: echo "${{ github.event.client_payload.test_cases_additional_prompt }}" | base64 --decode > data/test_cases_additional_prompt.md
+      - if: github.event.client_payload.user_stories
+        run: echo "${{ github.event.client_payload.user_stories }}" | base64 --decode > data/user_stories.json
+      - if: github.event.client_payload.test_case
+        run: echo "${{ github.event.client_payload.test_case }}" | base64 --decode > data/test_case.json
 
-          - name: Run agent
-            if: github.event.client_payload.code == null
-            run: |
-              npm run agent
-                
-          - name: Upload test results
-            if: always()
-            uses: actions/upload-artifact@v4
-            with:
-              name: playwright-results
-              path: |
-                test-results
-                playwright-report
-              retention-days: 3
+      - name: Run code
+        if: github.event.client_payload.code != null
+        run: |
+          rm -rf tests/*
+          echo "${{ github.event.client_payload.code }}" | base64 --decode > tests/code.spec.ts
+          npm run test
+
+      - name: Run agent
+        if: github.event.client_payload.code == null
+        run: |
+          npm run agent
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-results
+          path: |
+            test-results
+            playwright-report
+          retention-days: 3
