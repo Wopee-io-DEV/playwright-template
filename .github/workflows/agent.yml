@@ -93,20 +93,29 @@ jobs:
 
       - name: Create data folder
         run: mkdir -p data
-      - if: github.event.client_payload.app_context
+      - name: Create app context
+        if: github.event.client_payload.app_context
         run: echo "${{ github.event.client_payload.app_context }}" | base64 --decode > data/app_context.md
-      - if: github.event.client_payload.general_user_stories
+      - name: Create general user stories
+        if: github.event.client_payload.general_user_stories
         run: echo "${{ github.event.client_payload.general_user_stories }}" | base64 --decode > data/general_user_stories.md
-      - if: github.event.client_payload.general_user_stories_additional_prompt
+      - name: Create general user stories additional prompt
+        if: github.event.client_payload.general_user_stories_additional_prompt
         run: echo "${{ github.event.client_payload.general_user_stories_additional_prompt }}" | base64 --decode > data/general_user_stories_additional_prompt.md
-      - if: github.event.client_payload.test_cases
+      - name: Create test cases
+        if: github.event.client_payload.test_cases
         run: echo "${{ github.event.client_payload.test_cases }}" | base64 --decode > data/test_cases.json
-      - if: github.event.client_payload.test_cases_additional_prompt
+      - name: Create test cases additional prompt
+        if: github.event.client_payload.test_cases_additional_prompt
         run: echo "${{ github.event.client_payload.test_cases_additional_prompt }}" | base64 --decode > data/test_cases_additional_prompt.md
-      - if: github.event.client_payload.user_stories
+      - name: Create user stories
+        if: github.event.client_payload.user_stories
         run: echo "${{ github.event.client_payload.user_stories }}" | base64 --decode > data/user_stories.json
-      - if: github.event.client_payload.test_case
-        run: echo "${{ github.event.client_payload.test_case }}" | base64 --decode > data/test_case.json
+      - name: Create test case
+        if: github.event.client_payload.test_case
+        run: |
+          echo "${{ github.event.client_payload.test_case }}" | base64 --decode > data/test_case.json
+          export WOPEE_USER_PROMPT="${{ github.event.client_payload.user_prompt }}"
 
       - name: Run code
         if: github.event.client_payload.code != null
@@ -116,9 +125,13 @@ jobs:
           npm run test
 
       - name: Run agent
-        if: github.event.client_payload.code == null
         run: |
-          npm run agent
+          if [ -z "${{ github.event.client_payload.code }}" ] && [ -z "${{ github.event.client_payload.test_case }}" ]; then
+            npm run agent
+          else
+            export WOPEE_USER_PROMPT=$(echo "${{ github.event.client_payload.test_case }}" | base64 --decode)
+            npm run agent
+          fi
 
       - name: Upload test results
         if: always()
