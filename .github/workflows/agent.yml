@@ -117,6 +117,14 @@ jobs:
           echo "${{ github.event.client_payload.test_case }}" | base64 --decode > data/test_case.json
           export WOPEE_USER_PROMPT="${{ github.event.client_payload.user_prompt }}"
 
+      - name: Set WOPEE_TEST_USERNAME
+        if: github.event.client_payload.suite_analysis_config != null && github.event.client_payload.suite_analysis_config.username != null
+        run: export WOPEE_TEST_USERNAME="${{ github.event.client_payload.suite_analysis_config.username }}"
+
+      - name: Set WOPEE_TEST_PASSWORD
+        if: github.event.client_payload.suite_analysis_config != null && github.event.client_payload.suite_analysis_config.password != null
+        run: export WOPEE_TEST_PASSWORD="${{ github.event.client_payload.suite_analysis_config.password }}"
+
       - name: Run code
         if: github.event.client_payload.code != null
         run: |
