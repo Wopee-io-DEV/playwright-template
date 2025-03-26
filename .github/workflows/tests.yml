@@ -2,7 +2,7 @@ name: Run Playwright tests
 
 on:
   repository_dispatch:
-    types: [run]
+    types: [run, code]
   workflow_dispatch:
 
 jobs:

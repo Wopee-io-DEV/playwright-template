@@ -3,7 +3,7 @@ run-name: Agent(${{ inputs.AGENT_AZURE_MODEL_NAME }}) ${{ inputs.WOPEE_PROJECT_U
 
 on:
   repository_dispatch:
-    types: [agent]
+    types: [agent, crawl]
   workflow_dispatch:
     inputs:
       WOPEE_PROJECT_URL:
