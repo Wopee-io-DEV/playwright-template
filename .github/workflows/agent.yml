@@ -69,7 +69,7 @@ jobs:
       WOPEE_ENABLE_SOFT_ASSERT: "true"
       WOPEE_PIXEL_TO_PIXEL_DIFF_TOLERANCE: "0.1"
       WOPEE_COLLECT_PAGE_CONTENT: "true"
-      WOPEE_USER_PROMPT: ${{ inputs.WOPEE_USER_PROMPT || 'Discover and proceed with all possible user stories in the application.' }}
+      WOPEE_USER_PROMPT: ${{ inputs.WOPEE_USER_PROMPT || 'You are a senior QA engineer running an exploratory test. Use `assertVisualState` to get an explanation of the app under test and propose user flow with the highest business value. Then conduct the test.' }}
       AGENT_AZURE_API_KEY: ${{ secrets.AGENT_AZURE_API_KEY || secrets.AZURE_API_KEY }}
       AGENT_AZURE_RESOURCE_NAME: ${{ vars.AGENT_AZURE_RESOURCE_NAME || 'wopee-ox' }}
       AGENT_AZURE_MODEL_NAME: ${{ inputs.AGENT_AZURE_MODEL_NAME || 'gpt-4o-mini' }}
