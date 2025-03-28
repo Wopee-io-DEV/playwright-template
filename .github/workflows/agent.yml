@@ -138,6 +138,6 @@ jobs:
         with:
           name: playwright-results
           path: |
-            test-results
-            playwright-report
+            /tmp/test-results
+            /tmp/playwright-report
           retention-days: 3
