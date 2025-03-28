@@ -131,10 +131,7 @@ jobs:
         run: export WOPEE_TEST_PASSWORD="${{ github.event.client_payload.suite_analysis_config.password }}"
 
       - name: Run agent
-        run: |
-          cd /tmp
-          git pull --no-edit
-          npm run agent
+        run: wopee_agent
 
       - name: Upload test results
         if: always()
