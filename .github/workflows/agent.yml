@@ -138,19 +138,16 @@ jobs:
           # 1. From workflow_dispatch input if set
           if [ ! -z "${{ inputs.WOPEE_USER_PROMPT }}" ]; then
             echo "WOPEE_USER_PROMPT=${{ inputs.WOPEE_USER_PROMPT }}" >> $GITHUB_ENV
-            exit 0
           fi
 
           # 2. From suite_analysis_config.additionalInstructions
           if [ ! -z "${{ github.event.client_payload.suite_analysis_config.additionalInstructions }}" ]; then
             echo "WOPEE_USER_PROMPT=${{ github.event.client_payload.suite_analysis_config.additionalInstructions }}" >> $GITHUB_ENV
-            exit 0
           fi
 
           # 3. From test_case if present
           if [ ! -z "${{ github.event.client_payload.test_case }}" ]; then
             echo "WOPEE_USER_PROMPT=$(echo '${{ github.event.client_payload.test_case }}' | base64 --decode)" >> $GITHUB_ENV
-            exit 0
           fi
 
           # 4. Fallback default
