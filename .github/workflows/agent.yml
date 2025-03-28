@@ -18,7 +18,7 @@ on:
         description: "AGENT_AZURE_MODEL_NAME"
         required: true
         type: choice
-        default: "gpt-4o-mini"
+        default: "gpt-4o"
         options:
           - "gpt-4o"
           - "gpt-4o-mini"
@@ -37,7 +37,7 @@ on:
         description: "TOOLS_AZURE_MODEL_NAME"
         required: true
         type: choice
-        default: "gpt-4o-mini"
+        default: "gpt-4o"
         options:
           - "gpt-4o"
           - "gpt-4o-mini"
