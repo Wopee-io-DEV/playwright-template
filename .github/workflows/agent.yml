@@ -130,8 +130,7 @@ jobs:
         if: github.event.client_payload.suite_analysis_config != null && github.event.client_payload.suite_analysis_config.password != null
         run: export WOPEE_TEST_PASSWORD="${{ github.event.client_payload.suite_analysis_config.password }}"
 
-      - name: Run agent
-        run: wopee_agent
+      - run: wopee_agent
 
       - name: Upload test results
         if: always()
