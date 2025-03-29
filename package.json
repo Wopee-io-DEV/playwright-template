@@ -5,6 +5,7 @@
     "@playwright/test": "^1.43.1",
     "@wopee-io/wopee.pw": "^4.17.1",
     "ai": "^4.1.45",
+    "axios": "^1.8.4",
     "cli-table3": "^0.6.5",
     "html-minifier-terser": "^7.2.0",
     "parse5": "^7.2.1",
