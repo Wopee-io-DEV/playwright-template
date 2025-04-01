@@ -117,10 +117,15 @@ jobs:
           echo "${{ github.event.client_payload.test_case }}" | base64 --decode > data/test_case.json
           export WOPEE_USER_PROMPT="${{ github.event.client_payload.user_prompt }}"
 
-      - name: Set suite name if provided
-        if: github.event_name == 'repository_dispatch' && github.event.client_payload.suite_name != null
+      - name: Set WOPEE_SUITE_NAME
+        if: github.event_name == 'repository_dispatch' && github.event.client_payload.suite.name != null
         run: |
-          echo 'WOPEE_SUITE_NAME=${{ github.event.client_payload.suite_name }}' >> $GITHUB_ENV
+          echo 'WOPEE_SUITE_NAME=${{ github.event.client_payload.suite.name }}' >> $GITHUB_ENV
+      
+      - name: Set WOPEE_SUITE_UUID
+        if: github.event_name == 'repository_dispatch' && github.event.client_payload.suite.uuid != null
+        run: |
+          echo 'WOPEE_SUITE_UUID=${{ github.event.client_payload.suite.uuid }}' >> $GITHUB_ENV
 
       - name: Set WOPEE_TEST_USERNAME
         if: github.event.client_payload.suite_analysis_config != null && github.event.client_payload.suite_analysis_config.username != null
@@ -141,3 +146,12 @@ jobs:
             /tmp/test-results
             /tmp/playwright-report
           retention-days: 3
+
+      - name: Confirm end of run
+        run: |
+          curl --request POST \
+            --header 'content-type: application/json' \
+            --header 'api_key: ${{ secrets.WOPEE_API_KEY }}' \
+            --url '${{ env.WOPEE_API_URL }}' \
+            --data '{"query":"mutation PostProcessAnalysisSuite($input: PostProcessAnalysisSuiteInput!) { postProcessAnalysisSuite(input: $input) }", "variables":{"input":{ "projectUuid":"${{ env.WOPEE_PROJECT_UUID }}", "suiteUuid":"${{ env.WOPEE_SUITE_UUID }}"}}}'
+  
