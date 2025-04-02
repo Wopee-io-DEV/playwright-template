@@ -18,7 +18,7 @@ on:
         description: "AGENT_AZURE_MODEL_NAME"
         required: true
         type: choice
-        default: "gpt-4o-mini"
+        default: "gpt-4o"
         options:
           - "gpt-4o"
           - "gpt-4o-mini"
@@ -37,7 +37,7 @@ on:
         description: "TOOLS_AZURE_MODEL_NAME"
         required: true
         type: choice
-        default: "gpt-4o-mini"
+        default: "gpt-4o"
         options:
           - "gpt-4o"
           - "gpt-4o-mini"
@@ -69,7 +69,6 @@ jobs:
       WOPEE_ENABLE_SOFT_ASSERT: "true"
       WOPEE_PIXEL_TO_PIXEL_DIFF_TOLERANCE: "0.1"
       WOPEE_COLLECT_PAGE_CONTENT: "true"
-      WOPEE_USER_PROMPT: ${{ inputs.WOPEE_USER_PROMPT || 'You are a senior QA engineer running an exploratory test. Use `assertVisualState` to get an explanation of the app under test and propose user flow with the highest business value. Then conduct the test.' }}
       # AGENT_AZURE_API_KEY: ${{ secrets.AGENT_AZURE_API_KEY || secrets.AZURE_API_KEY }}
       AGENT_AZURE_RESOURCE_NAME: ${{ vars.AGENT_AZURE_RESOURCE_NAME || 'wopee-ox' }}
       AGENT_AZURE_MODEL_NAME: ${{ inputs.AGENT_AZURE_MODEL_NAME || 'gpt-4o-mini' }}
@@ -134,6 +133,34 @@ jobs:
       - name: Set WOPEE_TEST_PASSWORD
         if: github.event.client_payload.suite_analysis_config != null && github.event.client_payload.suite_analysis_config.password != null
         run: export WOPEE_TEST_PASSWORD="${{ github.event.client_payload.suite_analysis_config.password }}"
+
+      - name: Set WOPEE_COOKIE_PREFERENCE # ACCEPT_ALL | DECLINE_ALL | IGNORE
+        if: github.event.client_payload.suite_analysis_config != null && github.event.client_payload.suite_analysis_config.cookiePreference != null
+        run: export WOPEE_COOKIE_PREFERENCE="${{ github.event.client_payload.suite_analysis_config.cookiePreference }}"
+
+      - name: Set WOPEE_USER_PROMPT # (priority: input > suite_analysis_config > test_case > default)
+        run: |
+          # 1. From workflow_dispatch input if set
+          if [ ! -z "${{ inputs.WOPEE_USER_PROMPT }}" ]; then
+            echo "WOPEE_USER_PROMPT=${{ inputs.WOPEE_USER_PROMPT }}" >> $GITHUB_ENV
+            exit 0
+          fi
+
+          # 2. From suite_analysis_config.additionalInstructions
+          if [ ! -z "${{ github.event.client_payload.suite_analysis_config.additionalInstructions }}" ]; then
+            CLEANED_PROMPT=$(echo "${{ github.event.client_payload.suite_analysis_config.additionalInstructions }}" | tr '\n' ' ' | tr -s ' ')
+            echo "WOPEE_USER_PROMPT=$CLEANED_PROMPT" >> $GITHUB_ENV
+            exit 0
+          fi
+
+          # 3. From test_case if present
+          if [ ! -z "${{ github.event.client_payload.test_case }}" ]; then
+            echo "WOPEE_USER_PROMPT=$(echo '${{ github.event.client_payload.test_case }}' | base64 --decode)" >> $GITHUB_ENV
+            exit 0
+          fi
+
+          # 4. Fallback default
+          echo "WOPEE_USER_PROMPT=You are a senior QA engineer running an exploratory test. Use \`assertVisualState\` to get an explanation of the app under test and propose user flow with the highest business value. Then conduct the test." >> $GITHUB_ENV
 
       - run: wopee_agent
 
