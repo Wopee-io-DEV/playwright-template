@@ -9,6 +9,7 @@
     "cli-table3": "^0.6.5",
     "html-minifier-terser": "^7.2.0",
     "parse5": "^7.2.1",
+    "speakeasy": "^2.0.0",
     "typescript": "^5.4.5"
   },
   "scripts": {
