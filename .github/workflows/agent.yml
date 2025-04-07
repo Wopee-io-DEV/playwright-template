@@ -36,37 +36,11 @@ jobs:
           npm install --prefer-offline --no-audit
           npx playwright install ffmpeg
 
-      - name: Create data folder
-        run: mkdir -p data
-      - name: Create app context
-        if: github.event.client_payload.app_context
-        run: echo "${{ github.event.client_payload.app_context }}" | base64 --decode > data/app_context.md
-      - name: Create general user stories
-        if: github.event.client_payload.general_user_stories
-        run: echo "${{ github.event.client_payload.general_user_stories }}" | base64 --decode > data/general_user_stories.md
-      - name: Create general user stories additional prompt
-        if: github.event.client_payload.general_user_stories_additional_prompt
-        run: echo "${{ github.event.client_payload.general_user_stories_additional_prompt }}" | base64 --decode > data/general_user_stories_additional_prompt.md
-      - name: Create test cases
-        if: github.event.client_payload.test_cases
-        run: echo "${{ github.event.client_payload.test_cases }}" | base64 --decode > data/test_cases.json
-      - name: Create test cases additional prompt
-        if: github.event.client_payload.test_cases_additional_prompt
-        run: echo "${{ github.event.client_payload.test_cases_additional_prompt }}" | base64 --decode > data/test_cases_additional_prompt.md
-      - name: Create user stories
-        if: github.event.client_payload.user_stories
-        run: echo "${{ github.event.client_payload.user_stories }}" | base64 --decode > data/user_stories.json
-      - name: Create test case
-        if: github.event.client_payload.test_case
-        run: |
-          echo "${{ github.event.client_payload.test_case }}" | base64 --decode > data/test_case.json
-          export WOPEE_USER_PROMPT="${{ github.event.client_payload.user_prompt }}"
-
       - name: Set WOPEE_SUITE_NAME
         if: github.event_name == 'repository_dispatch' && github.event.client_payload.suite.name != null
         run: |
           echo 'WOPEE_SUITE_NAME=${{ github.event.client_payload.suite.name }}' >> $GITHUB_ENV
-      
+
       - name: Set WOPEE_SUITE_UUID
         if: github.event_name == 'repository_dispatch' && github.event.client_payload.suite.uuid != null
         run: |
@@ -127,4 +101,3 @@ jobs:
             --header 'api_key: ${{ secrets.WOPEE_API_KEY }}' \
             --url '${{ env.WOPEE_API_URL }}' \
             --data '{"query":"mutation PostProcessAnalysisSuite($input: PostProcessAnalysisSuiteInput!) { postProcessAnalysisSuite(input: $input) }", "variables":{"input":{ "projectUuid":"${{ env.WOPEE_PROJECT_UUID }}", "suiteUuid":"${{ env.WOPEE_SUITE_UUID }}"}}}'
-  
