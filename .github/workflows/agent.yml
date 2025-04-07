@@ -1,5 +1,5 @@
-name: Agent
-run-name: Agent(${{ inputs.AGENT_AZURE_MODEL_NAME }}) ${{ inputs.WOPEE_PROJECT_URL }} ${{ inputs.WOPEE_USER_PROMPT }}
+name: AI Agent for software testing
+run-name: Wopee.io Agent (${{ github.event.client_payload.testCase }})
 
 on:
   repository_dispatch:
@@ -36,50 +36,26 @@ jobs:
           npm install --prefer-offline --no-audit
           npx playwright install ffmpeg
 
-      - name: Set WOPEE_SUITE_NAME
-        if: github.event_name == 'repository_dispatch' && github.event.client_payload.suite.name != null
+      - name: Set analysis suite parameters & test case to run
         run: |
-          echo 'WOPEE_SUITE_NAME=${{ github.event.client_payload.suite.name }}' >> $GITHUB_ENV
-
-      - name: Set WOPEE_SUITE_UUID
-        if: github.event_name == 'repository_dispatch' && github.event.client_payload.suite.uuid != null
-        run: |
-          echo 'WOPEE_SUITE_UUID=${{ github.event.client_payload.suite.uuid }}' >> $GITHUB_ENV
-
-      - name: Set WOPEE_TEST_USERNAME
-        if: github.event.client_payload.suite_analysis_config != null && github.event.client_payload.suite_analysis_config.username != null
-        run: export WOPEE_TEST_USERNAME="${{ github.event.client_payload.suite_analysis_config.username }}"
-
-      - name: Set WOPEE_TEST_PASSWORD
-        if: github.event.client_payload.suite_analysis_config != null && github.event.client_payload.suite_analysis_config.password != null
-        run: export WOPEE_TEST_PASSWORD="${{ github.event.client_payload.suite_analysis_config.password }}"
-
-      - name: Set WOPEE_COOKIE_PREFERENCE # ACCEPT_ALL | DECLINE_ALL | IGNORE
-        if: github.event.client_payload.suite_analysis_config != null && github.event.client_payload.suite_analysis_config.cookiePreference != null
-        run: export WOPEE_COOKIE_PREFERENCE="${{ github.event.client_payload.suite_analysis_config.cookiePreference }}"
-
-      - name: Set WOPEE_USER_PROMPT # (priority: input > suite_analysis_config > test_case)
-        run: |
-          # 1. From workflow_dispatch input if set
-          if [ ! -z "${{ inputs.WOPEE_USER_PROMPT }}" ]; then
-            echo "WOPEE_USER_PROMPT=${{ inputs.WOPEE_USER_PROMPT }}" >> $GITHUB_ENV
-            exit 0
+          if [ -n "${{ github.event.client_payload.analysisSuiteUuid }}" ]; then
+            echo "WOPEE_ANALYSIS_SUITE_UUID=${{ github.event.client_payload.analysisSuiteUuid }}" >> $GITHUB_ENV
           fi
 
-          # 2. From suite_analysis_config.additionalInstructions
-          if [ ! -z "${{ github.event.client_payload.suite_analysis_config.additionalInstructions }}" ]; then
-            CLEANED_PROMPT=$(echo "${{ github.event.client_payload.suite_analysis_config.additionalInstructions }}" | tr '\n' ' ' | tr -s ' ')
-            echo "WOPEE_USER_PROMPT=$CLEANED_PROMPT" >> $GITHUB_ENV
-            exit 0
+          if [ -n "${{ github.event.client_payload.suite.name }}" ]; then
+            echo "WOPEE_SUITE_NAME=${{ github.event.client_payload.suite.name }}" >> $GITHUB_ENV
           fi
 
-          # 3. From test_case if present
-          if [ ! -z "${{ github.event.client_payload.test_case }}" ]; then
-            echo "WOPEE_USER_PROMPT=$(echo '${{ github.event.client_payload.test_case }}' | base64 --decode)" >> $GITHUB_ENV
-            exit 0
+          if [ -n "${{ github.event.client_payload.suite.uuid }}" ]; then
+            echo "WOPEE_SUITE_UUID=${{ github.event.client_payload.suite.uuid }}" >> $GITHUB_ENV
           fi
 
-      - run: wopee_agent
+          if [ -n "${{ github.event.client_payload.testCase }}" ]; then
+            echo "WOPEE_TEST_CASE_ID=${{ github.event.client_payload.testCase }}" >> $GITHUB_ENV
+          fi
+
+      - name: Run agent
+        run: wopee_agent
 
       - name: Upload test results
         if: always()
