@@ -1,5 +1,5 @@
 name: AI Agent for software testing
-run-name: Wopee.io Agent (${{ github.event.client_payload.testCase }})
+run-name: Wopee.io Agent (${{ github.event.client_payload.testCase }}${{ github.event.action }})
 
 on:
   repository_dispatch:
@@ -48,6 +48,10 @@ jobs:
 
           if [ -n "${{ github.event.client_payload.suite.uuid }}" ]; then
             echo "WOPEE_SUITE_UUID=${{ github.event.client_payload.suite.uuid }}" >> $GITHUB_ENV
+
+            if [ "${{ github.event.action }}" = "crawl" ]; then
+              echo "WOPEE_ANALYSIS_SUITE_UUID=${{ github.event.client_payload.suite.uuid }}" >> $GITHUB_ENV
+            fi
           fi
 
           if [ -n "${{ github.event.client_payload.testCase }}" ]; then
