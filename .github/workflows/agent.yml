@@ -1,5 +1,10 @@
 name: AI Agent for software testing
-run-name: Wopee.io Agent (${{ github.event.client_payload.testCase }}${{ github.event.action }})
+run-name: >
+  Wopee.io: ${{ 
+    github.event.client_payload.testCase.userStoryId && github.event.client_payload.testCase.testCaseId 
+      && format('{0} - {1}, {2}', github.event.client_payload.testCase.userStoryId, github.event.client_payload.testCase.testCaseId, github.event.action) 
+    || format('{0}', github.event.action) 
+  }}
 
 on:
   repository_dispatch:
@@ -13,6 +18,7 @@ on:
 
 jobs:
   test:
+    name: Wopee.io Agent ${{ github.event.action}}
     runs-on: self-hosted
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -72,9 +78,30 @@ jobs:
           retention-days: 3
 
       - name: Confirm end of run
+        if: always()
         run: |
+          if [ "${{ job.status }}" = "failure" ]; then
+            ERROR_FLAG=true
+          else
+            ERROR_FLAG=false
+          fi
+
+          JSON_PAYLOAD=$(cat <<EOF
+          {
+            "query": "mutation PostProcessAnalysisSuite(\$input: PostProcessAnalysisSuiteInput!) { postProcessAnalysisSuite(input: \$input) }",
+            "variables": {
+              "input": {
+                "projectUuid": "${{ env.WOPEE_PROJECT_UUID }}",
+                "suiteUuid": "${{ env.WOPEE_SUITE_UUID }}",
+                "error": $ERROR_FLAG
+              }
+            }
+          }
+          EOF
+          )
+
           curl --request POST \
             --header 'content-type: application/json' \
             --header 'api_key: ${{ secrets.WOPEE_API_KEY }}' \
             --url '${{ env.WOPEE_API_URL }}' \
-            --data '{"query":"mutation PostProcessAnalysisSuite($input: PostProcessAnalysisSuiteInput!) { postProcessAnalysisSuite(input: $input) }", "variables":{"input":{ "projectUuid":"${{ env.WOPEE_PROJECT_UUID }}", "suiteUuid":"${{ env.WOPEE_SUITE_UUID }}"}}}'
+            --data "$JSON_PAYLOAD"
