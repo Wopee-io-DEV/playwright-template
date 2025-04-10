@@ -3,7 +3,7 @@ run-name: >
   Wopee.io: ${{ 
     github.event.client_payload.testCase.userStoryId && github.event.client_payload.testCase.testCaseId 
       && format('{0} - {1}, {2}', github.event.client_payload.testCase.userStoryId, github.event.client_payload.testCase.testCaseId, github.event.action) 
-    || format('{0}', github.event.action) 
+    || format('{0}, {1}', github.event.client_payload.suite.name, github.event.action) 
   }}
 
 on:
