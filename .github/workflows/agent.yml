@@ -1,5 +1,10 @@
 name: AI Agent for software testing
-run-name: Wopee.io Agent (${{ github.event.client_payload.testCase }}${{ github.event.action }})
+run-name: >
+  Wopee.io Agent ${{ 
+    github.event.client_payload.testCase.userStoryId && github.event.client_payload.testCase.testCaseId 
+      && format('({0} - {1}, {2})', github.event.client_payload.testCase.userStoryId, github.event.client_payload.testCase.testCaseId, github.event.action) 
+    || format('({0})', github.event.action) 
+  }}
 
 on:
   repository_dispatch:
