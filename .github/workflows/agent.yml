@@ -75,7 +75,7 @@ jobs:
           path: |
             /tmp/test-results
             /tmp/playwright-report
-          retention-days: 3
+          retention-days: 1
 
       - name: Confirm end of run
         if: always()
