@@ -33,6 +33,9 @@ jobs:
       WOPEE_ENABLE_SOFT_ASSERT: "true"
       WOPEE_PIXEL_TO_PIXEL_DIFF_TOLERANCE: "0.1"
       WOPEE_COLLECT_PAGE_CONTENT: "true"
+      # WOPEE_AGENT_AUTO_UPDATE: "true"
+      BASIC_AUTH_USER: ${{ secrets.BASIC_AUTH_USER }}
+      BASIC_AUTH_PASSWORD: ${{ secrets.BASIC_AUTH_PASSWORD }}
 
     steps:
       - uses: actions/checkout@v4
