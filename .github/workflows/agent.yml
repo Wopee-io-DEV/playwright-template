@@ -63,8 +63,12 @@ jobs:
             fi
           fi
 
-          if [ -n "${{ github.event.client_payload.testCase }}" ]; then
-            echo "WOPEE_TEST_CASE_ID=${{ github.event.client_payload.testCase }}" >> $GITHUB_ENV
+          if [ -n "${{ github.event.client_payload.testCase.testCaseId }}" ]; then
+            echo "WOPEE_TEST_CASE_ID=${{ github.event.client_payload.testCase.testCaseId }}" >> $GITHUB_ENV
+          fi
+
+          if [ -n "${{ github.event.client_payload.testCase.userStoryId }}" ]; then
+            echo "WOPEE_USER_STORY_ID=${{ github.event.client_payload.testCase.userStoryId }}" >> $GITHUB_ENV
           fi
 
       - name: Run agent
