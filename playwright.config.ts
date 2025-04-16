@@ -11,6 +11,10 @@ export default defineConfig({
     trace: "on",
     video: "on",
     screenshot: "only-on-failure",
+    httpCredentials: {
+      username: process.env.BASIC_AUTH_USER || "",
+      password: process.env.BASIC_AUTH_PASSWORD || "",
+    },
   },
 
   projects: [

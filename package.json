@@ -19,5 +19,8 @@
   },
   "prettier": {
     "trailingComma": "all"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.1"
   }
 }
