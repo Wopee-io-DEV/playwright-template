@@ -29,7 +29,7 @@ jobs:
       - name: Set WOPEE_TEST_PASSWORD
         if: github.event.client_payload.suite_analysis_config != null && github.event.client_payload.suite_analysis_config.password != null
         run: export WOPEE_TEST_PASSWORD="${{ github.event.client_payload.suite_analysis_config.password }}"
-  
+
       - name: Run tests
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -44,6 +44,8 @@ jobs:
           WOPEE_ENABLE_SOFT_ASSERT: "true"
           WOPEE_PIXEL_TO_PIXEL_DIFF_TOLERANCE: "0.1"
           WOPEE_COLLECT_PAGE_CONTENT: "true"
+          BASIC_AUTH_USER: ${{ secrets.BASIC_AUTH_USER }}
+          BASIC_AUTH_PASSWORD: ${{ secrets.BASIC_AUTH_PASSWORD }}
         run: |
           npm install --prefer-offline --no-audit
           npx playwright install ffmpeg
