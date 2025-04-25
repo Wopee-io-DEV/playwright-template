@@ -8,6 +8,7 @@ export default defineConfig({
   timeout: 100000,
   reporter: "@wopee-io/wopee.pw/wopee-reporter",
   use: {
+    baseURL: process.env.WOPEE_PROJECT_URL || "http://localhost:3000",
     trace: "on",
     video: "on",
     screenshot: "only-on-failure",
