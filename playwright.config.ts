@@ -9,8 +9,8 @@ export default defineConfig({
   reporter: "@wopee-io/wopee.pw/wopee-reporter",
   use: {
     baseURL: process.env.WOPEE_PROJECT_URL || "http://localhost:3000",
-    trace: "on",
-    video: "on",
+    trace: process.env.CI ? "off" : "on-first-retry",
+    video: process.env.CI ? "off" : "on",
     screenshot: "only-on-failure",
     httpCredentials: {
       username: process.env.BASIC_AUTH_USER || "",
