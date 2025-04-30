@@ -7,6 +7,7 @@ export default defineConfig({
   fullyParallel: true,
   timeout: 100000,
   reporter: "@wopee-io/wopee.pw/wopee-reporter",
+  workers: 1,
   use: {
     baseURL: process.env.WOPEE_PROJECT_URL || "http://localhost:3000",
     trace: process.env.CI ? "off" : "on-first-retry",
