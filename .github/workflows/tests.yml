@@ -4,7 +4,7 @@ run-name: >
     github.event.client_payload.testCase.userStoryId && github.event.client_payload.testCase.testCaseId 
       && format('{0} - {1}, {2}', github.event.client_payload.testCase.userStoryId, github.event.client_payload.testCase.testCaseId, github.event.action) 
     || format('{0}, {1}', github.event.client_payload.suite.name, github.event.action) 
-    || format('{0}, {1}', github.event.client_payload.suite_analysis_config, github.event.action) 
+    || format('{0}, {1}', github.event.client_payload.suiteAnalysisConfig, github.event.action) 
   }}
 
 on:
@@ -30,12 +30,12 @@ jobs:
           echo 'WOPEE_SUITE_NAME=${{ github.event.client_payload.suite_name }}' >> $GITHUB_ENV
 
       - name: Set WOPEE_TEST_USERNAME
-        if: github.event.client_payload.suite_analysis_config != null && github.event.client_payload.suite_analysis_config.username != null
-        run: export WOPEE_TEST_USERNAME="${{ github.event.client_payload.suite_analysis_config.username }}"
+        if: github.event.client_payload.suiteAnalysisConfig != null && github.event.client_payload.suiteAnalysisConfig.username != null
+        run: export WOPEE_TEST_USERNAME="${{ github.event.client_payload.suiteAnalysisConfig.username }}"
 
       - name: Set WOPEE_TEST_PASSWORD
-        if: github.event.client_payload.suite_analysis_config != null && github.event.client_payload.suite_analysis_config.password != null
-        run: export WOPEE_TEST_PASSWORD="${{ github.event.client_payload.suite_analysis_config.password }}"
+        if: github.event.client_payload.suiteAnalysisConfig != null && github.event.client_payload.suiteAnalysisConfig.password != null
+        run: export WOPEE_TEST_PASSWORD="${{ github.event.client_payload.suiteAnalysisConfig.password }}"
 
       - name: Generate WOPEE_SUITE_NAME
         run: echo "WOPEE_SUITE_NAME=Testing-$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> $GITHUB_ENV
