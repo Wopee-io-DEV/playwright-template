@@ -3,7 +3,7 @@
   "dependencies": {
     "@ai-sdk/azure": "^1.1.13",
     "@playwright/test": "^1.43.1",
-    "@wopee-io/wopee.pw": "^4.17.2",
+    "@wopee-io/wopee.pw": "^4.17.3",
     "ai": "^4.1.45",
     "axios": "^1.8.4",
     "cli-table3": "^0.6.5",
