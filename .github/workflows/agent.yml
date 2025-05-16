@@ -9,130 +9,27 @@ run-name: >
 on:
   repository_dispatch:
     types: [agent, crawl]
-  workflow_dispatch:
-    inputs:
-      WOPEE_USER_PROMPT:
-        description: "WOPEE_USER_PROMPT"
-        default: "Proceed with E2E purchase flow."
-        required: true
 
 jobs:
   test:
     name: ${{ github.event.action}}
     runs-on: self-hosted
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      WOPEE_API_KEY: ${{ secrets.WOPEE_API_KEY }}
-      WOPEE_API_URL: ${{ vars.WOPEE_API_URL || 'https://api.wopee.io' }}
-      WOPEE_PROJECT_UUID: ${{ vars.WOPEE_PROJECT_UUID }}
-      WOPEE_PROJECT_URL: ${{ vars.WOPEE_PROJECT_URL || 'https://dronjo.wopee.io' }}
-      WOPEE_SCREENSHOT_VALIDATION_ENABLED: "true"
-      WOPEE_BRANCH_NAME: master
-      WOPEE_CI_BUILD_ID: build-123
-      WOPEE_CUSTOM_TAGS: custom-tag
-      WOPEE_ENABLE_SOFT_ASSERT: "true"
-      WOPEE_PIXEL_TO_PIXEL_DIFF_TOLERANCE: "0.1"
-      WOPEE_COLLECT_PAGE_CONTENT: "true"
-      # WOPEE_AGENT_AUTO_UPDATE: "true"
-      BASIC_AUTH_USER: ${{ secrets.BASIC_AUTH_USER }}
-      BASIC_AUTH_PASSWORD: ${{ secrets.BASIC_AUTH_PASSWORD }}
 
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Install dependencies
-        run: |
-          npm install --prefer-offline --no-audit
-          npx playwright install ffmpeg
-
-      - name: Set analysis suite parameters & test case to run
-        run: |
-          if [ -n "${{ github.event.client_payload.analysisSuiteUuid }}" ]; then
-            echo "WOPEE_ANALYSIS_SUITE_UUID=${{ github.event.client_payload.analysisSuiteUuid }}" >> $GITHUB_ENV
-          fi
-
-          if [ -n "${{ github.event.client_payload.suite.name }}" ]; then
-            echo "WOPEE_SUITE_NAME=${{ github.event.client_payload.suite.name }}" >> $GITHUB_ENV
-          fi
-
-          if [ -n "${{ github.event.client_payload.suite.uuid }}" ]; then
-            echo "WOPEE_SUITE_UUID=${{ github.event.client_payload.suite.uuid }}" >> $GITHUB_ENV
-
-            if [ "${{ github.event.action }}" = "crawl" ]; then
-              echo "WOPEE_ANALYSIS_SUITE_UUID=${{ github.event.client_payload.suite.uuid }}" >> $GITHUB_ENV
-            fi
-          fi
-
-          if [ -n "${{ github.event.client_payload.testCase.testCaseId }}" ]; then
-            echo "WOPEE_TEST_CASE_ID=${{ github.event.client_payload.testCase.testCaseId }}" >> $GITHUB_ENV
-          fi
-
-          if [ -n "${{ github.event.client_payload.testCase.userStoryId }}" ]; then
-            echo "WOPEE_USER_STORY_ID=${{ github.event.client_payload.testCase.userStoryId }}" >> $GITHUB_ENV
-          fi
-
-      - name: Run agent
-        run: wopee_agent
-
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-results
-          path: |
-            /tmp/test-results
-            /tmp/playwright-report
-          retention-days: 1
-
-      - name: Confirm end of run
-        if: always()
-        run: |
-
-          ERROR_FLAG=false
-          if [ "${{ job.status }}" = "failure" ]; then
-            ERROR_FLAG=true
-          fi
-
-
-          if [ "${{ github.event.action }}" = "crawl" ]; then
-
-            JSON_PAYLOAD=$(cat <<-EOF
-            {
-              "query": "mutation PostProcessAnalysisSuite(\$input: PostProcessAnalysisSuiteInput!) { postProcessAnalysisSuite(input: \$input) }",
-              "variables": {
-                "input": {
-                  "error": $ERROR_FLAG,
-                  "projectUuid": "${{ env.WOPEE_PROJECT_UUID }}",
-                  "suiteUuid": "${{ env.WOPEE_SUITE_UUID }}"
-                }
-              }
-            }
-          EOF
-            )
-
-          else
-
-            JSON_PAYLOAD=$(cat <<-EOF
-            {
-              "query": "mutation PostProcessAgentSuite(\$input: PostProcessAgentSuiteInput!) { postProcessAgentSuite(input: \$input) }",
-              "variables": {
-                "input": {
-                  "error": $ERROR_FLAG,
-                  "projectUuid": "${{ env.WOPEE_PROJECT_UUID }}",
-                  "suiteUuid": "${{ env.WOPEE_SUITE_UUID }}",
-                  "testCase": {
-                    "testCaseId": "${{ env.WOPEE_TEST_CASE_ID }}",
-                    "userStoryId": "${{ env.WOPEE_USER_STORY_ID }}"
-                  }
-                }
-              }
-            }
-          EOF
-            )
-          fi
-
-          curl --request POST \
-            --header 'content-type: application/json' \
-            --header 'api_key: ${{ secrets.WOPEE_API_KEY }}' \
-            --url '${{ env.WOPEE_API_URL }}' \
-            --data "$JSON_PAYLOAD"
+      - uses: Wopee-io-DEV/run-agent@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WOPEE_API_KEY: ${{ secrets.WOPEE_API_KEY }}
+          WOPEE_API_URL: ${{ vars.WOPEE_API_URL || 'https://api.wopee.io' }}
+          WOPEE_PROJECT_UUID: ${{ vars.WOPEE_PROJECT_UUID }}
+          WOPEE_PROJECT_URL: ${{ vars.WOPEE_PROJECT_URL || 'https://dronjo.wopee.io' }}
+          WOPEE_SCREENSHOT_VALIDATION_ENABLED: "true"
+          WOPEE_BRANCH_NAME: master
+          WOPEE_CI_BUILD_ID: build-123
+          WOPEE_CUSTOM_TAGS: custom-tag
+          WOPEE_ENABLE_SOFT_ASSERT: "true"
+          WOPEE_PIXEL_TO_PIXEL_DIFF_TOLERANCE: "0.1"
+          WOPEE_COLLECT_PAGE_CONTENT: "true"
+          # WOPEE_AGENT_AUTO_UPDATE: "true"
+          BASIC_AUTH_USER: ${{ secrets.BASIC_AUTH_USER }}
+          BASIC_AUTH_PASSWORD: ${{ secrets.BASIC_AUTH_PASSWORD }}
