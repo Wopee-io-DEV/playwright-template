@@ -1,10 +1,5 @@
 name: AI Agent for software testing
-run-name: >
-  ${{ 
-    github.event.client_payload.testCase.userStoryId && github.event.client_payload.testCase.testCaseId 
-      && format('{0} - {1}, {2}', github.event.client_payload.testCase.userStoryId, github.event.client_payload.testCase.testCaseId, github.event.action) 
-    || format('{0}, {1}', github.event.client_payload.suite.name, github.event.action) 
-  }}
+run-name: ${{ github.event.client_payload.runName }}
 
 on:
   repository_dispatch:
@@ -14,7 +9,6 @@ jobs:
   test:
     name: ${{ github.event.action}}
     runs-on: self-hosted
-
     steps:
       - uses: Wopee-io-DEV/run-agent@v1
         env:
