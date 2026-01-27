@@ -10,7 +10,10 @@
     "html-minifier-terser": "^7.2.0",
     "parse5": "^7.3.0",
     "speakeasy": "^2.0.0",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "dotenv": "^16.4.5",
+    "lodash": "^4.17.21",
+    "proxy-from-env": "^1.1.0"
   },
   "scripts": {
     "test": "npm run pw",
