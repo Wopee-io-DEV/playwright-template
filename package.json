@@ -13,7 +13,9 @@
     "typescript": "^5.8.3",
     "dotenv": "^16.4.5",
     "lodash": "^4.17.21",
-    "proxy-from-env": "^1.1.0"
+    "proxy-from-env": "^1.1.0",
+    "http-proxy-agent": "^7.0.2",
+    "https-proxy-agent": "^7.0.6"
   },
   "scripts": {
     "test": "npm run pw",
