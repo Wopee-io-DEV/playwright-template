@@ -2,7 +2,7 @@
   "type": "commonjs",
   "dependencies": {
     "@ai-sdk/azure": "^2.0.7",
-    "@playwright/test": "^1.54.2",
+    "@playwright/test": "~1.54.2",
     "@wopee-io/wopee.pw": "^4.21.2",
     "ai": "^5.0.8",
     "axios": "^1.11.0",
