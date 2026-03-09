@@ -71,14 +71,21 @@ export default defineConfig({
   reporter: "@wopee-io/wopee.pw/wopee-reporter",
   workers: 1,
   use: {
+    launchOptions: {
+      args: ["--disable-blink-features=AutomationControlled"],
+    },
     baseURL: process.env.WOPEE_PROJECT_URL || "http://localhost:3000",
     trace: process.env.CI ? "off" : "on-first-retry",
     video: process.env.CI ? "off" : "on",
     screenshot: "only-on-failure",
-    httpCredentials: {
-      username: process.env.BASIC_AUTH_USER || "",
-      password: process.env.BASIC_AUTH_PASSWORD || "",
-    },
+    ...(process.env.BASIC_AUTH_USER && process.env.BASIC_AUTH_PASSWORD
+      ? {
+          httpCredentials: {
+            username: process.env.BASIC_AUTH_USER,
+            password: process.env.BASIC_AUTH_PASSWORD,
+          },
+        }
+      : {}),
   },
 
   projects: projectsConfig,
