@@ -7,9 +7,39 @@ on:
 
 jobs:
   test:
-    name: ${{ github.event.action}}
+    name: ${{ github.event.action }}
     runs-on: self-hosted
+    timeout-minutes: 30
     steps:
-      - uses: Wopee-io/run-agent@v1
+      - uses: Wopee-io-DEV/run-agent@v1
         env:
           WOPEE_API_KEY: ${{ secrets.WOPEE_API_KEY }}
+
+      - name: Notify CMD on cancellation or timeout
+        if: cancelled()
+        shell: bash
+        run: |
+          SUITE_UUID="${{ github.event.client_payload.suite.uuid }}"
+          PROJECT_UUID="${{ github.event.client_payload.projectUuid }}"
+          ACTION="${{ github.event.action }}"
+          API_URL="${{ github.event.client_payload.apiUrl || 'https://api.wopee.io' }}"
+
+          if [ -z "$SUITE_UUID" ] || [ -z "$PROJECT_UUID" ]; then
+            echo "⚠️ Missing suite or project UUID — cannot notify CMD"
+            exit 0
+          fi
+
+          if [ "$ACTION" = "crawl" ]; then
+            QUERY='mutation PostProcessAnalysisSuite($input: PostProcessAnalysisSuiteInput!) { postProcessAnalysisSuite(input: $input) }'
+          else
+            QUERY='mutation PostProcessAgentSuite($input: PostProcessAgentSuiteInput!) { postProcessAgentSuite(input: $input) }'
+          fi
+
+          echo "Notifying CMD that run was cancelled/timed out..."
+          curl --fail-with-body --silent --show-error \
+            --request POST \
+            --header "content-type: application/json" \
+            --header "api_key: ${{ secrets.WOPEE_API_KEY }}" \
+            --url "$API_URL" \
+            --data "{\"query\":\"$QUERY\",\"variables\":{\"input\":{\"error\":true,\"projectUuid\":\"$PROJECT_UUID\",\"suiteUuid\":\"$SUITE_UUID\"}}}" \
+            || echo "⚠️ CMD notification failed"
