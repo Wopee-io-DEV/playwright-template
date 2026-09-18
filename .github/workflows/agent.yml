@@ -8,7 +8,10 @@ on:
 jobs:
   test:
     name: ${{ github.event.action}}
-    runs-on: self-hosted
+    # Both labels must match: `wopee` pins the job to Wopee's own runner fleet
+    # now that other runners share the org. A tenant whose fleet uses another
+    # label gets this line rewritten by infra's utils/repo-sync.sh.
+    runs-on: [self-hosted, wopee]
     steps:
       - uses: Wopee-io/run-agent@v1
         env:
