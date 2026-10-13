@@ -8,7 +8,8 @@
   },
   "scripts": {
     "pretest": "playwright install chromium",
-    "test": "playwright test"
+    "test": "npm run pw",
+    "pw": "playwright test ./tests/ --config playwright.config.ts"
   },
   "prettier": {
     "trailingComma": "all"
