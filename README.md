@@ -2,7 +2,7 @@
 
 This repository is your project's Playwright test suite with Wopee.io visual testing already wired in.
 Wopee.io created it when you created the project in [Commander](https://cmd.wopee.io), and filled in your project settings.
-The sample test `tests/wopee.spec.ts` opens your app's URL and takes one full-page screenshot that Wopee.io compares with an approved baseline.
+The sample test `tests/simple.spec.ts` opens your app's URL and takes one full-page screenshot that Wopee.io compares with an approved baseline.
 Run it as it is first, then grow it into your own tests.
 
 ## Run from Commander
@@ -33,9 +33,9 @@ The first `npm test` also downloads Chromium for Playwright. The console prints 
 
 ## Review in Commander
 
-Open Commander › Runs and the suite "Playwright sample <date time>".
+Open Commander › Runs and the suite "Simple Example <date time>".
 
-- First run: the step `Home page` has status **new**. Check the screenshot and **Approve** it; it becomes the baseline.
+- First run: the step `Check Home Page` has status **new**. Check the screenshot and **Approve** it; it becomes the baseline.
 - Next runs: the step is **ok** when the page looks the same, or **unresolved** when it differs. Open it to see the difference, then Approve (new baseline) or Reject.
 
 A visual difference is reported in Commander; it does not fail the Playwright test.
@@ -49,8 +49,8 @@ A visual difference is reported in Commander; it does not fail the Playwright te
   await wopee.trackFullPage({ page, stepName: "Contact page" });
   ```
 
-  The sample test has a commented example. Every `stepName` in a test gets its own baseline.
-- **More tests:** add `*.spec.ts` files under `tests/`. The `beforeAll` / `beforeEach` / `afterEach` hooks in `tests/wopee.spec.ts` show what every file needs.
+  Every `stepName` in a test gets its own baseline.
+- **More tests:** add `*.spec.ts` files under `tests/`. `tests/simple.spec.ts` shows what every test needs: start a suite and a scenario, track, stop the scenario.
 - **Examples:** `tests-examples/` shows `trackElement` and `trackImage`. It is not part of the default run; to try an example, copy the file into `tests/`.
 
 ## Add Wopee.io to an existing Playwright project
