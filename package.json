@@ -7,8 +7,8 @@
     "typescript": "^5.8.3"
   },
   "scripts": {
-    "test": "npm run pw",
-    "pw": "playwright test ./tests/ --config playwright.config.ts"
+    "pretest": "playwright install chromium",
+    "test": "playwright test"
   },
   "prettier": {
     "trailingComma": "all"
