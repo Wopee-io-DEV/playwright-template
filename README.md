@@ -61,6 +61,6 @@ Follow [Playwright visual testing](https://docs.wopee.io/playwright-visual-testi
 ## Troubleshooting
 
 - **`Wopee is not configured — missing required environment variables`**: `.env` is missing or a value is empty. Run `cp .env.example .env` and paste the API key.
-- **`ZodError ... Expected object, received null`** or an authorization error: the API key does not belong to this project, or `WOPEE_API_URL` does not match the Commander you use (`https://api.wopee.io` for cmd.wopee.io).
+- **`ZodError ... Expected object, received null`** or an authorization error: the API key usually belongs to another Wopee.io instance (or another project). Create the key in the Commander you run against. `WOPEE_API_URL` is only for self-hosted instances; leave it out for cmd.wopee.io (the default is `https://api.wopee.io`).
 - **`Executable doesn't exist`**: run `npx playwright install chromium`.
-- **Placeholders like `{wopeeProjectUuid}` in `.env`**: you cloned the public template, not your project's repository. Put in your values from Commander › More › Settings › API Keys (`WOPEE_API_URL`, `WOPEE_PROJECT_UUID`) and your app's URL (`WOPEE_PROJECT_URL`).
+- **`put-your-project-uuid-here` in `.env`**: you cloned the public template, not your project's repository. Put in your project UUID from Commander › More › Settings › API Keys (`WOPEE_PROJECT_UUID`) and your app's URL (`WOPEE_PROJECT_URL`).
