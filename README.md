@@ -7,7 +7,7 @@ Run it as it is first, then grow it into your own tests.
 
 ## Run in GitHub Actions
 
-Nothing to set up: Wopee.io already stored the `WOPEE_API_KEY` secret and wrote your project settings to `.github/workflows/.env`.
+Nothing to set up: when Wopee.io created this repository it stored the `WOPEE_API_KEY` secret and the `WOPEE_PROJECT_UUID`, `WOPEE_PROJECT_URL` and `WOPEE_API_URL` variables (Settings › Secrets and variables › Actions), and the workflow uses them.
 
 1. Open the **Actions** tab › **Run Playwright tests** › **Run workflow**.
 2. The run shows up as "Playwright tests (manual)". When it finishes, the results are in Commander › Runs.
@@ -43,7 +43,7 @@ A visual difference is reported in Commander; it does not fail the Playwright te
 
 ## Make it yours
 
-- **Your app:** the sample opens `WOPEE_PROJECT_URL` (the App URL you entered in Commander). Change it in `.env` for local runs and in `.github/workflows/.env` for GitHub Actions.
+- **Your app:** the sample opens `WOPEE_PROJECT_URL` (the App URL you entered in Commander). Change it in `.env` for local runs; for GitHub Actions, change the App URL in Commander or the `WOPEE_PROJECT_URL` variable in Settings › Secrets and variables › Actions › Variables.
 - **Add a check:** after any interaction, one line tracks another screenshot:
 
   ```ts
