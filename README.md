@@ -5,12 +5,11 @@ Wopee.io created it when you created the project in [Commander](https://cmd.wope
 The sample test `tests/wopee.spec.ts` opens your app's URL and takes one full-page screenshot that Wopee.io compares with an approved baseline.
 Run it as it is first, then grow it into your own tests.
 
-## Run in GitHub Actions
+## Run from Commander
 
-Nothing to set up: when Wopee.io created this repository it stored the `WOPEE_API_KEY` secret and the `WOPEE_PROJECT_UUID`, `WOPEE_PROJECT_URL` and `WOPEE_API_URL` variables (Settings › Secrets and variables › Actions), and the workflow uses them.
+Nothing to set up. In Commander open **Runs** › **Start testing**. Commander runs this repository's tests in GitHub Actions with your project settings (the API key is the repository's `WOPEE_API_KEY` secret) and shows the results under Runs.
 
-1. Open the **Actions** tab › **Run Playwright tests** › **Run workflow**.
-2. The run shows up as "Playwright tests (manual)". When it finishes, the results are in Commander › Runs.
+Want the tests on every push or pull request? Add your own trigger to `.github/workflows/tests.yml`.
 
 ## Run locally
 
@@ -43,7 +42,7 @@ A visual difference is reported in Commander; it does not fail the Playwright te
 
 ## Make it yours
 
-- **Your app:** the sample opens `WOPEE_PROJECT_URL` (the App URL you entered in Commander). Change it in `.env` for local runs; for GitHub Actions, change the App URL in Commander or the `WOPEE_PROJECT_URL` variable in Settings › Secrets and variables › Actions › Variables.
+- **Your app:** the sample opens `WOPEE_PROJECT_URL` (the App URL you entered in Commander). Change it in `.env` for local runs; for runs from Commander, change the App URL in Commander.
 - **Add a check:** after any interaction, one line tracks another screenshot:
 
   ```ts
