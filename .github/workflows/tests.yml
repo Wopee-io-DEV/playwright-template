@@ -19,9 +19,8 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: Wopee-io/run-playwright@v1
-        with:
-          project-uuid: ${{ vars.WOPEE_PROJECT_UUID }}
-          project-url: ${{ vars.WOPEE_PROJECT_URL }}
-          api-url: ${{ vars.WOPEE_API_URL }}
         env:
           WOPEE_API_KEY: ${{ secrets.WOPEE_API_KEY }}
+          WOPEE_PROJECT_UUID: ${{ github.event.client_payload.env.WOPEE_PROJECT_UUID || vars.WOPEE_PROJECT_UUID }}
+          WOPEE_PROJECT_URL: ${{ github.event.client_payload.env.WOPEE_PROJECT_URL || vars.WOPEE_PROJECT_URL }}
+          WOPEE_API_URL: ${{ github.event.client_payload.env.WOPEE_API_URL || vars.WOPEE_API_URL }}
