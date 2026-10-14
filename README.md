@@ -52,6 +52,7 @@ A visual difference is reported in Commander; it does not fail the Playwright te
   Every `stepName` in a test gets its own baseline.
 - **More tests:** add `*.spec.ts` files under `tests/`. `tests/simple.spec.ts` shows what every test needs: start a suite and a scenario, track, stop the scenario.
 - **Examples:** `tests-examples/` shows `trackElement` and `trackImage`. It is not part of the default run; to try an example, copy the file into `tests/`.
+- **Browser switches:** `WOPEE_BROWSER_ARGS` adds Chromium switches, whitespace-separated, to these tests and to the Wopee agent alike, e.g. `--auth-server-allowlist=* --auth-negotiate-delegate-allowlist=*` for an app behind Negotiate (Kerberos/NTLM) SSO. Put it in `.env` for local runs and in `.github/workflows/.env` (or a project variable in Commander) for runs from Commander.
 
 ## Add Wopee.io to an existing Playwright project
 

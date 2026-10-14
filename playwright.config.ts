@@ -18,6 +18,15 @@ const selectedBrowser =
   (process.env.WOPEE_BROWSER as BrowserName) || "chromium";
 const browser = browserToDevice[selectedBrowser] ?? "Desktop Chrome";
 
+// Extra Chromium switches, whitespace-separated — the same variable and format the
+// Wopee agent reads, so one setting covers agent runs and these tests alike, e.g.
+// "--auth-server-allowlist=* --auth-negotiate-delegate-allowlist=*" for Negotiate SSO.
+// Chromium-only: these switches would break a Firefox or WebKit launch.
+const extraBrowserArgs =
+  selectedBrowser === "chromium"
+    ? (process.env.WOPEE_BROWSER_ARGS ?? "").split(/\s+/).filter(Boolean)
+    : [];
+
 const projectsConfig: PlaywrightTestConfig<PlaywrightTestOptions>[] = [];
 
 if (process.env.VIEWPORT) {
@@ -72,7 +81,10 @@ export default defineConfig({
   workers: 1,
   use: {
     launchOptions: {
-      args: ["--disable-blink-features=AutomationControlled"],
+      args: [
+        "--disable-blink-features=AutomationControlled",
+        ...extraBrowserArgs,
+      ],
     },
     baseURL: process.env.WOPEE_PROJECT_URL || "http://localhost:3000",
     trace: process.env.CI ? "off" : "on-first-retry",
