@@ -2,7 +2,7 @@
   "type": "commonjs",
   "dependencies": {
     "@playwright/test": "1.64.1",
-    "@wopee-io/wopee.pw": "^4.25.1",
+    "@wopee-io/wopee.pw": "^4.26.3",
     "dotenv": "^16.4.5",
     "typescript": "^5.8.3"
   },
