@@ -65,3 +65,7 @@ Follow [Playwright visual testing](https://docs.wopee.io/playwright-visual-testi
 - **`ZodError ... Expected object, received null`** or an authorization error: the API key usually belongs to another Wopee.io instance (or another project). Create the key in the Commander you run against. `WOPEE_API_URL` is only for self-hosted instances; leave it out for cmd.wopee.io (the default is `https://api.wopee.io`).
 - **`Executable doesn't exist`**: run `npx playwright install chromium`.
 - **`put-your-project-uuid-here` in `.env`**: you cloned the public template, not your project's repository. Put in your project UUID from Commander › More › Settings › API Keys (`WOPEE_PROJECT_UUID`) and your app's URL (`WOPEE_PROJECT_URL`).
+
+## Maintainers
+
+Note: the runtime image bakes this repo's `main` HEAD at every runtime build and resolves the `@wopee-io/*` ranges then, so a change reaches runners only after a runtime build. `@playwright/test` must match the runtime's `PLAYWRIGHT_VERSION`, or the runtime build fails. `main` is mirrored into tenant orgs by the infra mirror's sync. See the [release flow](https://github.com/autonomous-testing/infra/blob/main/docs/release-flow.md).
